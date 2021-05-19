@@ -35,6 +35,7 @@ namespace EverisHire.HireManagement.Api.Controllers
 
 
         [HttpGet("{id}", Name = "GetProjectById")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<ActionResult<ProjectDetailVm>> GetProjectById(Guid id) 
         {
             var getProjectDetailQuery = new GetProjectDetailQuery() { Id = id} ;

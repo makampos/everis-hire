@@ -5,6 +5,7 @@ using EverisHire.HireManagement.Application.Features.Projects.Commands.CreatePro
 using EverisHire.HireManagement.Application.Features.Projects.Commands.DeleteProject;
 using EverisHire.HireManagement.Application.Features.Projects.Commands.UpdateProject;
 using EverisHire.HireManagement.Application.Features.Projects.Queries;
+using EverisHire.HireManagement.Application.Features.Projects.Queries.GetProjectDetail;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -30,6 +31,14 @@ namespace EverisHire.HireManagement.Api.Controllers
         {
             var dtos = await _mediator.Send(new GetProjectsListQuery());
             return Ok(dtos);
+        }
+
+
+        [HttpGet("{id}", Name = "GetProjectById")]
+        public async Task<ActionResult<ProjectDetailVm>> GetProjectById(Guid id) 
+        {
+            var getProjectDetailQuery = new GetProjectDetailQuery() { Id = id} ;
+            return Ok(await _mediator.Send(getProjectDetailQuery));
         }
         
         [HttpPost(Name = "AddProject")]

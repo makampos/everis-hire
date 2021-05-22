@@ -55,7 +55,8 @@ namespace EverisHire.HireManagement.Application.Features.Projects.Commands
                     Name = request.Name,
                     Description = request.Description,
                     CreatedBy = _httpContextAccessor.HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier)
-                    };
+                };
+                
                 project = await _projectRepository.AddAsync(project);
                 createProjectCommandResponse.Project = _mapper.Map
                 <CreateProjectDto>(project);

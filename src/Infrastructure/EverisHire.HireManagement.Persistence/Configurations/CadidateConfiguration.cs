@@ -7,10 +7,7 @@ namespace EverisHire.HireManagement.Persistence.Configurations
     public class CandidateConfiguration : IEntityTypeConfiguration<Candidate>
     {
         public void Configure(EntityTypeBuilder<Candidate> builder)
-        {            
-            builder.HasKey(value => value.CandidateId);
-            builder.HasOne(value => value.Job);                                
-
+        {                              
             builder.Property(value => value.Name)
                 .IsRequired()
                 .HasMaxLength(50);

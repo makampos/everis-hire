@@ -14,7 +14,7 @@ namespace EverisHire.HireManagement.Domain.Entities
         public string WhoIndicated { get; set; }
         public decimal SalaryClaim { get; set; }
         public virtual Job Job { get; set; }
-        //public Guid JobId { get; set; }
+        public Guid? JobId { get; set; }
         
     }
 }

@@ -11,12 +11,17 @@ using EverisHire.HireManagement.Application.Features.Communities.Queries;
 using EverisHire.HireManagement.Application.Features.Events.Commands.CreateEvent;
 using EverisHire.HireManagement.Application.Features.Events.Commands.UpdateEvent;
 using EverisHire.HireManagement.Application.Features.Jobs.Commands.CreateJob;
+using EverisHire.HireManagement.Application.Features.Jobs.Queries;
+using EverisHire.HireManagement.Application.Features.LeadersCenters.Queries;
+using EverisHire.HireManagement.Application.Features.Ltfs.Queries;
+using EverisHire.HireManagement.Application.Features.ManagersSp.Queries;
 using EverisHire.HireManagement.Application.Features.Priorities.Queries;
 using EverisHire.HireManagement.Application.Features.Projects.Commands.CreateProject;
 using EverisHire.HireManagement.Application.Features.Projects.Commands.UpdateProject;
 using EverisHire.HireManagement.Application.Features.Projects.Queries;
 using EverisHire.HireManagement.Application.Features.Projects.Queries.GetProjectDetail;
 using EverisHire.HireManagement.Application.Features.Recruiters.Queries;
+using EverisHire.HireManagement.Application.Features.Squads.Queries;
 using EverisHire.HireManagement.Application.Features.StatusJobs.Queries;
 using EverisHire.HireManagement.Application.Features.Technologies.Queries;
 using EverisHire.HireManagement.Application.Features.YearsOfExperiences.Queries;
@@ -59,6 +64,7 @@ namespace EverisHire.HireManagement.Application.Profiles
 
             CreateMap<Job, CreateJobCommand>();
             CreateMap<Job, CreateJobDto>();
+            CreateMap<Job, JobListVm>();
 
             CreateMap<Recruiter, RecruiterListVm>();
 
@@ -71,6 +77,14 @@ namespace EverisHire.HireManagement.Application.Profiles
             CreateMap<Community, CommunityListVm>();
             
             CreateMap<Priority, PriorityListVm>();
+
+           CreateMap<ManagerSp, ManagerSpListVm>();
+
+           CreateMap<Ltf, LtfListVm>();
+
+           CreateMap<Squad, SquadListVm>();
+
+           CreateMap<LeaderCenters, LeaderCentersListVm>();
         }
         
     }

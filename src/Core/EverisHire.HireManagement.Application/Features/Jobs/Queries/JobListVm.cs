@@ -1,11 +1,11 @@
 using System;
-using MediatR;
 
-namespace EverisHire.HireManagement.Application.Features.Jobs.Commands.CreateJob
+namespace EverisHire.HireManagement.Application.Features.Jobs.Queries
 {
-    public class CreateJobCommand : IRequest<CreateJobCommandResponse>
+    public class JobListVm
     {
-        public int EverJob { get; set; }        
+        public Guid JobId { get; set; }
+        public int EverJob { get; set; }
         public string LeaderCenters { get; set; }
         public string LtfOrPl { get; set; }
         public string ManagerSp { get; set; }
@@ -16,12 +16,12 @@ namespace EverisHire.HireManagement.Application.Features.Jobs.Commands.CreateJob
         public DateTime? OpeningDate { get; set; }
         public string Technology { get; set; }
         public Guid YearsOfExperience { get; set; }
-        public DateTime? DesiredDate { get; set; }
+        public DateTime DesiredDate { get; set; }
         public decimal MaximumSalary { get; set; }
         public string Recruiter { get; set; }
         public int? Priority { get; set; }
         public DateTime? PriorityDate { get; set; }
         public string Status { get; set; }
-        public string Justification { get; set; }           
+        public string Justification { get; set; }
     }
 }

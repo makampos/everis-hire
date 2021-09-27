@@ -7,16 +7,14 @@ namespace EverisHire.HireManagement.Application.Features.Jobs.Commands.CreateJob
     public class CreateJobDto
     {
         public Guid JobId { get; set; }
-        public string JobType { get; set; }
         public int EverJob { get; set; }
-        public string Manager { get; set; }
         public string Ltf { get; set; }
         public string ManagerSp { get; set; }
         public string Community { get; set; }
         public string AllocationType { get; set; }
         public DateTime? ClosedDate { get; set; }
         public string Technology { get; set; }
-        public int YearsOfExperience { get; set; }
+        public string YearsOfExperience { get; set; }
         public decimal MaximumSalary { get; set; }
         public int? Priority { get; set; }
         public DateTime? PriorityDate { get; set; }

@@ -29,22 +29,24 @@ namespace EverisHire.HireManagement.Application.Features.Jobs.Commands.CreateJob
 
             var job = new Job() 
             {
-                JobType = request.JobType,
                 EverJob = request.EverJob,
-                Manager = request.Manager,
-                Ltf = request.Ltf,
+                LeaderCenters = request.LeaderCenters,
+                LtfOrPl = request.LtfOrPl,
                 ManagerSp = request.ManagerSp,
                 Community = request.Community,
-                AllocationType = request.AllocationType,
-                ClosedDate = request.ClosedDate,
-                Technology =  request.Technology, 
+                Squad = request.Squad,
+                ProjectId = request.ProjectId,
+                AllocationType =  request.AllocationType, 
+                OpeningDate = request.OpeningDate,
+                Technology = request.Technology,
                 YearsOfExperience = request.YearsOfExperience,
+                DesiredDate = request.DesiredDate,
                 MaximumSalary = request.MaximumSalary,
+                Recruiter = request.Recruiter,
                 Priority = request.Priority,
                 PriorityDate = request.PriorityDate,
                 Status = request.Status,
-                Justification = request.Justification,
-                ProjectId = request.ProjectId
+                Justification = request.Justification
             };
 
             job = await jobRepository.AddAsync(job);

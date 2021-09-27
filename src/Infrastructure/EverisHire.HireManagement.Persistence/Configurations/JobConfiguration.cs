@@ -10,19 +10,7 @@ namespace EverisHire.HireManagement.Persistence.Configurations
         {
             builder.HasKey(value => value.JobId);
             builder.HasMany(value => value.Candidates);
-
-            builder.Property(value => value.JobType)
-                .IsRequired()
-                .HasMaxLength(20);
-                
-            builder.Property(value => value.Manager)
-                .IsRequired()
-                .HasMaxLength(50);
-
-            builder.Property(value => value.Ltf)
-                .IsRequired()
-                .HasMaxLength(50);
-
+            
             builder.Property(value => value.ManagerSp)
                 .IsRequired()
                 .HasMaxLength(50);

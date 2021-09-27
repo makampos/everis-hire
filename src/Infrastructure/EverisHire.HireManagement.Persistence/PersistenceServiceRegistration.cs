@@ -28,7 +28,21 @@ namespace EverisHire.HireManagement.Persistence
             services.AddScoped<IJobRepository, JobRepository>();
             services.AddScoped<IRecruiterRepository, RecruiterRepository>();        
             services.AddScoped<ITechnologyRepository, TechnologyRespository>();   
+            services.AddScoped<IYearsOfExperienceRepository, YearsOfExperienceRepository>();
 
+            services.AddScoped<IStatusJobRepository, StatusJobRepository>();
+
+            services.AddScoped<ICommunityRepository, CommunityRepository>();
+
+            services.AddScoped<IPriorityRepository, PriorityRepository>();
+
+            services.AddScoped<IManagerSpRepository, ManagerSpRepository>();
+            
+            services.AddScoped<ILtfRepository, LtfRepository>();
+
+            services.AddScoped<ISquadRepository, SquadRepository>();
+
+            services.AddScoped<ILeaderCentersRepository, LeaderCentersRepository>();
 
             return services;    
         }

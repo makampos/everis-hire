@@ -30,8 +30,6 @@ namespace EverisHire.HireManagement.Application.Features.Recruiters.Queries
         {
             var allRecruiters = (await _recruiterRepository.ListAllAsync());
             return _mapper.Map<List<RecruiterListVm>>(allRecruiters);
-        }
-
-       
+        } 
     }
 }

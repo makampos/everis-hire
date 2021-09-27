@@ -51,7 +51,8 @@ namespace EverisHire.HireManagement.Application.Features.Projects.Commands
             if (createProjectCommandResponse.Success)
             {
                 
-                var project = new Project() { 
+                var project = new Project() 
+                { 
                     Name = request.Name,
                     Description = request.Description,
                     CreatedBy = _httpContextAccessor.HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier)

@@ -2,6 +2,8 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using EverisHire.HireManagement.Application.Features.Jobs.Commands.CreateJob;
+using EverisHire.HireManagement.Application.Features.Jobs.Commands.DeleteJob;
+using EverisHire.HireManagement.Application.Features.Jobs.Commands.UpdateJob;
 using EverisHire.HireManagement.Application.Features.Jobs.Queries;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
@@ -31,6 +33,13 @@ namespace EverisHire.HireManagement.Api.Controllers
             return Ok(dto);
         }
 
+        [HttpGet("{id}", Name = "GetJobById")]
+        public async Task<ActionResult<JobDetailVm>> GetJobById(Guid id)
+        {
+            var getJobDetailQuery = new GetJobDetailQuery() {JobId = id};
+            return Ok(await _mediator.Send(getJobDetailQuery));
+        }
+
         [HttpPost(Name = "AddJob")]
         public async Task<ActionResult<CreateJobCommandResponse>> Create(
             [FromBody] CreateJobCommand createJobCommand)
@@ -38,5 +47,26 @@ namespace EverisHire.HireManagement.Api.Controllers
             var response = await _mediator.Send(createJobCommand);
             return Ok(response);
         }
+
+        [HttpPut(Name = "UpdateJob")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesDefaultResponseType]
+        public async Task<ActionResult> Update([FromBody] UpdateJobCommand updateJobCommand)
+        {
+            await _mediator.Send(updateJobCommand);
+            return NoContent();
+        }
+
+        [HttpDelete("{id}", Name = "DeleteJob")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<ActionResult> Delete(Guid id)
+        {
+            var deleteJobCommand = new DeleteJobCommand() {JobId = id};
+            await _mediator.Send(deleteJobCommand);
+            return NoContent();
+        }
+
     }
 }

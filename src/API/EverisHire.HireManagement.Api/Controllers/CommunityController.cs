@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using AutoMapper;
 using EverisHire.HireManagement.Application.Features.Communities.Queries;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;

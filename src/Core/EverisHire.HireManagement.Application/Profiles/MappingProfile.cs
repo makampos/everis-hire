@@ -11,6 +11,7 @@ using EverisHire.HireManagement.Application.Features.Communities.Queries;
 using EverisHire.HireManagement.Application.Features.Events.Commands.CreateEvent;
 using EverisHire.HireManagement.Application.Features.Events.Commands.UpdateEvent;
 using EverisHire.HireManagement.Application.Features.Jobs.Commands.CreateJob;
+using EverisHire.HireManagement.Application.Features.Jobs.Commands.UpdateJob;
 using EverisHire.HireManagement.Application.Features.Jobs.Queries;
 using EverisHire.HireManagement.Application.Features.LeadersCenters.Queries;
 using EverisHire.HireManagement.Application.Features.Ltfs.Queries;
@@ -62,9 +63,11 @@ namespace EverisHire.HireManagement.Application.Profiles
             CreateMap<Candidate, CandidateDetailVm>();
             //CreateMap<Candidate, DeleteCandidateCommand>();
 
-            CreateMap<Job, CreateJobCommand>();
+            CreateMap<Job, CreateJobCommand>().ReverseMap();
+            CreateMap<Job, UpdateJobCommand>().ReverseMap();
             CreateMap<Job, CreateJobDto>();
             CreateMap<Job, JobListVm>();
+            CreateMap<Job, JobDetailVm>().ReverseMap();
 
             CreateMap<Recruiter, RecruiterListVm>();
 

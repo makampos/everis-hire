@@ -1,9 +1,12 @@
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using EverisHire.HireManagement.Application.Features.Candidates.Commands;
 using EverisHire.HireManagement.Application.Features.Candidates.Commands.DeleteCandidate;
 using EverisHire.HireManagement.Application.Features.Candidates.Commands.UpdateCandidate;
 using EverisHire.HireManagement.Application.Features.Candidates.Queries;
+using EverisHire.HireManagement.Application.Features.Candidates.Queries.GetCandidateInterviewDetail;
+using EverisHire.HireManagement.Application.Features.Candidates.Queries.GetCandidateListQuery;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -22,6 +25,22 @@ namespace EverisHire.HireManagement.Api.Controllers
         {
             _mediator = mediator;
         }
+        
+        [HttpGet("all", Name = "GetAllCandidates")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        public async Task<ActionResult<List<CandidateListVm>>> GetAllCandidates()
+        {
+            var dto = await _mediator.Send(new GetCandidateListQuery());
+            return Ok(dto);
+        }
+        
+        [HttpGet("notInInterview", Name = "GetAllCandidatesWhereNotInInterview")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        public async Task<ActionResult<List<CandidateListVm>>> GetAllCandidatesNotInInterview()
+        {
+            var dto = await _mediator.Send(new GetCandidateNotInInterviewListQuery());
+            return Ok(dto);
+        }
 
         [HttpGet("{id}", Name = "GetCandidateById")]
         [ProducesResponseType(StatusCodes.Status200OK)]
@@ -29,6 +48,14 @@ namespace EverisHire.HireManagement.Api.Controllers
         {
             var getCandidateDetailQuery = new GetCandidateDetailQuery() { CandidateId = id} ;
             return Ok(await _mediator.Send(getCandidateDetailQuery));
+        }
+        
+        [HttpGet("interview/{id}", Name = "GetCandidateByIdWithInclude")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        public async Task<ActionResult<CandidateInterviewDetailVm>> GetCandidateByIdWithInclude(Guid id) 
+        {
+            var getCandidateInterviewDetailQuery = new GetCandidateInterviewDetailQuery() { CandidateId = id} ;
+            return Ok(await _mediator.Send(getCandidateInterviewDetailQuery));
         }
 
         [HttpPost(Name = "AddCandidate")]

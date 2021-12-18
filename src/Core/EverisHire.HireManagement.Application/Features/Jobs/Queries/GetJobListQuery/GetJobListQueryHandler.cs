@@ -11,8 +11,8 @@ namespace EverisHire.HireManagement.Application.Features.Jobs.Queries
     public class GetJobListQueryHandler : IRequestHandler<GetJobListQuery, List<JobListVm>>
     {
         private readonly IMapper _mapper;
-        private readonly IAsyncRepository<Job> _jobRepository;
-        public GetJobListQueryHandler(IMapper mapper, IAsyncRepository<Job> jobRepository)
+        private readonly IJobRepository _jobRepository;
+        public GetJobListQueryHandler(IMapper mapper, IJobRepository jobRepository)
         {
             _mapper = mapper;
             _jobRepository = jobRepository;
@@ -21,8 +21,9 @@ namespace EverisHire.HireManagement.Application.Features.Jobs.Queries
             GetJobListQuery request,
             CancellationToken cancellationToken)
         {
-            var allJobs = await _jobRepository.ListAllAsync();
-            return _mapper.Map<List<JobListVm>>(allJobs);
+            var allJobs = await _jobRepository.GetJobWithInclude();
+            var jobsToReturn = _mapper.Map<List<JobListVm>>(allJobs);
+            return jobsToReturn;
 
         }
     }

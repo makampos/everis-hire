@@ -44,6 +44,9 @@ namespace EverisHire.HireManagement.Persistence
 
             services.AddScoped<ILeaderCentersRepository, LeaderCentersRepository>();
 
+            services.AddScoped<IInterviewRepository, InterviewRepository>();
+            services.AddScoped<IAllocationTypeRepository, AllocationTypeRepository>();
+
             return services;    
         }
     }

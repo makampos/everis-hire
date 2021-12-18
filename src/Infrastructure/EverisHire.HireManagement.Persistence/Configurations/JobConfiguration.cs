@@ -8,8 +8,27 @@ namespace EverisHire.HireManagement.Persistence.Configurations
     {
         public void Configure(EntityTypeBuilder<Job> builder)
         {
-            builder.HasKey(value => value.JobId);
-            builder.HasMany(value => value.Candidates);
+            
+            builder.HasKey(x => x.JobId);
+            
+            
+            builder.HasKey(x => x.JobId);
+            builder.HasOne(x => x.Project)
+                .WithMany(x => x.Jobs)
+                .HasForeignKey(e => e.ProjectId)
+                .IsRequired();
+
+            builder.HasKey(x => x.JobId);
+            builder.HasOne(value => value.StatusJob)
+                .WithMany(value => value.Jobs)
+                .HasForeignKey(value => value.StatusJobId)
+                .IsRequired();
+            
+            builder.HasKey(x => x.JobId);
+            builder.HasOne(value => value.AllocationType)
+                .WithMany(value => value.Jobs)
+                .HasForeignKey(value => value.AllocationTypeId)
+                .IsRequired();
             
             builder.Property(value => value.ManagerSp)
                 .IsRequired()
@@ -18,16 +37,13 @@ namespace EverisHire.HireManagement.Persistence.Configurations
             builder.Property(value => value.EverJob)
                 .IsRequired();    
 
-            builder.Property(value => value.Status)
+            builder.Property(value => value.StatusJobId)
                 .IsRequired()
-                .HasMaxLength(20);  
+                .HasMaxLength(50);  
 
             builder.Property(value => value.Technology)
                 .HasMaxLength(30); 
-
-            builder.Property(value => value.Technology)
-                .HasMaxLength(20);
-                
+            
             builder.Property(value => value.MaximumSalary)
                 .IsRequired();    
 

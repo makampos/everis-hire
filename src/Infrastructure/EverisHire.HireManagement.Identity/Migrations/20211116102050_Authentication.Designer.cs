@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace EverisHire.HireManagement.Identity.Migrations
 {
     [DbContext(typeof(EverisHireIdentityDbContext))]
-    [Migration("20210616053920_Authentication")]
+    [Migration("20211116102050_Authentication")]
     partial class Authentication
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

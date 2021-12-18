@@ -1,17 +1,15 @@
-using System;
 using System.Collections.Generic;
 using System.Security.Claims;
 using System.Threading;
 using System.Threading.Tasks;
 using AutoMapper;
 using EverisHire.HireManagement.Application.Contracts.Persistence;
-using EverisHire.HireManagement.Application.Features.Projects.Commands.CreateProject;
 using EverisHire.HireManagement.Domain.Entities;
 using MediatR;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Identity;
 
-namespace EverisHire.HireManagement.Application.Features.Projects.Commands
+
+namespace EverisHire.HireManagement.Application.Features.Projects.Commands.CreateProject
 {
     public class CreateProjectCommandHandler
         : IRequestHandler<CreateProjectCommand, CreateProjectCommandResponse>

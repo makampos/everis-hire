@@ -19,6 +19,10 @@
     <ProjectReference Include="..\..\Core\EverisHire.HireManagement.Application\EverisHire.HireManagement.Application.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Migrations" />
+  </ItemGroup>
+
  
 
 

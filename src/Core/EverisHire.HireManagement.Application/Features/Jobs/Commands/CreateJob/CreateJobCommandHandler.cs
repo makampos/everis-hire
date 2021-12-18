@@ -1,3 +1,4 @@
+using System;
 using System.Threading;
 using System.Threading.Tasks;
 using AutoMapper;
@@ -24,7 +25,11 @@ namespace EverisHire.HireManagement.Application.Features.Jobs.Commands.CreateJob
             var createJobCommandResponse = new CreateJobCommandResponse();
             
             // validations goes here!
-
+            var uniqueJob = await jobRepository.GetJobByEverjobAsync(request.EverJob);
+            if (uniqueJob != null)
+            {
+                throw new Exception($"Já existe uma vaga cadastrada com o código Everjob {request.EverJob}");
+            }
             // ======================
 
             var job = new Job() 
@@ -36,7 +41,7 @@ namespace EverisHire.HireManagement.Application.Features.Jobs.Commands.CreateJob
                 Community = request.Community,
                 Squad = request.Squad,
                 ProjectId = request.ProjectId,
-                AllocationType =  request.AllocationType, 
+                AllocationTypeId =  request.AllocationTypeId, 
                 OpeningDate = request.OpeningDate,
                 Technology = request.Technology,
                 YearsOfExperience = request.YearsOfExperience,
@@ -45,10 +50,10 @@ namespace EverisHire.HireManagement.Application.Features.Jobs.Commands.CreateJob
                 Recruiter = request.Recruiter,
                 Priority = request.Priority,
                 PriorityDate = request.PriorityDate,
-                Status = request.Status,
+                StatusJobId = request.StatusJobId,
                 Justification = request.Justification
             };
-
+            
             job = await jobRepository.AddAsync(job);
             createJobCommandResponse.Job = mapper.Map<CreateJobDto>(job);
 

@@ -16,6 +16,8 @@
     <ProjectReference Include="..\EverisHire.HireManagement.Domain/EverisHire.HireManagement.Domain.csproj" />
   </ItemGroup>
   <ItemGroup>
+<!--    <Folder Include="Features\Interview\Queries" />-->
     <Folder Include="Feature\Events\" />
+    <Folder Include="Utils" />
   </ItemGroup>
 </Project>

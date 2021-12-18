@@ -9,8 +9,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace EverisHire.HireManagement.Persistence.Migrations
 {
     [DbContext(typeof(EverisHireDbContext))]
-    [Migration("20210616053737_migracao_inicial")]
-    partial class migracao_inicial
+    [Migration("20211124114328_create-db")]
+    partial class createdb
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -19,16 +19,11 @@ namespace EverisHire.HireManagement.Persistence.Migrations
                 .HasAnnotation("ProductVersion", "3.1.10")
                 .HasAnnotation("Relational:MaxIdentifierLength", 64);
 
-            modelBuilder.Entity("EverisHire.HireManagement.Domain.Entities.Candidate", b =>
+            modelBuilder.Entity("EverisHire.HireManagement.Domain.Entities.AllocationType", b =>
                 {
-                    b.Property<Guid>("CandidateId")
+                    b.Property<Guid>("AllocationTypeId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("char(36)");
-
-                    b.Property<string>("AlocationType")
-                        .IsRequired()
-                        .HasColumnType("varchar(50) CHARACTER SET utf8mb4")
-                        .HasMaxLength(50);
 
                     b.Property<string>("CreatedBy")
                         .HasColumnType("longtext CHARACTER SET utf8mb4");
@@ -36,8 +31,8 @@ namespace EverisHire.HireManagement.Persistence.Migrations
                     b.Property<DateTime>("CreatedDate")
                         .HasColumnType("datetime(6)");
 
-                    b.Property<Guid?>("JobId")
-                        .HasColumnType("char(36)");
+                    b.Property<string>("Description")
+                        .HasColumnType("longtext CHARACTER SET utf8mb4");
 
                     b.Property<string>("LastModifiedBy")
                         .HasColumnType("longtext CHARACTER SET utf8mb4");
@@ -45,18 +40,73 @@ namespace EverisHire.HireManagement.Persistence.Migrations
                     b.Property<DateTime?>("LastModifiedDate")
                         .HasColumnType("datetime(6)");
 
+                    b.HasKey("AllocationTypeId");
+
+                    b.ToTable("AllocationTypes");
+
+                    b.HasData(
+                        new
+                        {
+                            AllocationTypeId = new Guid("edd0a0aa-3025-4d7f-a10e-d8ab6fb748fd"),
+                            CreatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Description = "Presencial"
+                        },
+                        new
+                        {
+                            AllocationTypeId = new Guid("fce83b42-94bb-42ad-9f29-a609c1af02fc"),
+                            CreatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Description = "Teletrabalho"
+                        });
+                });
+
+            modelBuilder.Entity("EverisHire.HireManagement.Domain.Entities.Candidate", b =>
+                {
+                    b.Property<Guid>("CandidateId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("char(36)");
+
+                    b.Property<Guid>("AllocationTypeId")
+                        .HasColumnType("char(50)")
+                        .HasMaxLength(50);
+
+                    b.Property<string>("City")
+                        .HasColumnType("longtext CHARACTER SET utf8mb4");
+
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("longtext CHARACTER SET utf8mb4");
+
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<string>("LastModifiedBy")
+                        .HasColumnType("longtext CHARACTER SET utf8mb4");
+
+                    b.Property<DateTime?>("LastModifiedDate")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<string>("LeaderCenters")
+                        .HasColumnType("longtext CHARACTER SET utf8mb4");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("varchar(50) CHARACTER SET utf8mb4")
                         .HasMaxLength(50);
 
+                    b.Property<string>("Recruiter")
+                        .HasColumnType("longtext CHARACTER SET utf8mb4");
+
+                    b.Property<string>("Resume")
+                        .HasColumnType("longtext CHARACTER SET utf8mb4");
+
                     b.Property<decimal>("SalaryClaim")
                         .HasColumnType("decimal(65,30)");
 
-                    b.Property<string>("Status")
-                        .IsRequired()
-                        .HasColumnType("varchar(50) CHARACTER SET utf8mb4")
+                    b.Property<Guid>("StatusCandidateId")
+                        .HasColumnType("char(50)")
                         .HasMaxLength(50);
+
+                    b.Property<string>("Technology")
+                        .HasColumnType("longtext CHARACTER SET utf8mb4");
 
                     b.Property<string>("WhoIndicated")
                         .HasColumnType("longtext CHARACTER SET utf8mb4");
@@ -66,7 +116,9 @@ namespace EverisHire.HireManagement.Persistence.Migrations
 
                     b.HasKey("CandidateId");
 
-                    b.HasIndex("JobId");
+                    b.HasIndex("AllocationTypeId");
+
+                    b.HasIndex("StatusCandidateId");
 
                     b.ToTable("Candidates");
                 });
@@ -128,10 +180,17 @@ namespace EverisHire.HireManagement.Persistence.Migrations
                     b.HasData(
                         new
                         {
-                            CommunityId = new Guid("556e39aa-1ee6-4447-9579-ec561c45eb3e"),
+                            CommunityId = new Guid("1fce3dca-7e41-4300-8b72-3edacadb5863"),
                             CreatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Description = "Comunidade responsável por desenvolver software para agências de bancos. ",
                             Name = "Rede de Agências"
+                        },
+                        new
+                        {
+                            CommunityId = new Guid("d5382ed7-6de5-475e-8faf-361aaa4e335a"),
+                            CreatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Description = "Comunidade responsável por desenvolver software para o judiciário ",
+                            Name = "Seguimento Jurídico"
                         });
                 });
 
@@ -183,14 +242,129 @@ namespace EverisHire.HireManagement.Persistence.Migrations
                     b.ToTable("Events");
                 });
 
+            modelBuilder.Entity("EverisHire.HireManagement.Domain.Entities.Interview", b =>
+                {
+                    b.Property<Guid>("InterviewId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("char(36)");
+
+                    b.Property<string>("AllocationType")
+                        .HasColumnType("longtext CHARACTER SET utf8mb4");
+
+                    b.Property<DateTime>("AvailableDate")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<DateTime>("CandidateCreatedDate")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<Guid>("CandidateId")
+                        .HasColumnType("char(36)");
+
+                    b.Property<string>("CandidateName")
+                        .HasColumnType("longtext CHARACTER SET utf8mb4");
+
+                    b.Property<string>("CandidateRecruiterName")
+                        .HasColumnType("longtext CHARACTER SET utf8mb4");
+
+                    b.Property<string>("CandidateStatus")
+                        .HasColumnType("longtext CHARACTER SET utf8mb4");
+
+                    b.Property<string>("CandidateTechnology")
+                        .HasColumnType("longtext CHARACTER SET utf8mb4");
+
+                    b.Property<int>("CandidateYearsOfExperience")
+                        .HasColumnType("int");
+
+                    b.Property<string>("City")
+                        .HasColumnType("longtext CHARACTER SET utf8mb4");
+
+                    b.Property<string>("Community")
+                        .HasColumnType("longtext CHARACTER SET utf8mb4");
+
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("longtext CHARACTER SET utf8mb4");
+
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<DateTime>("DateInterView")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<int>("EverJob")
+                        .HasColumnType("int");
+
+                    b.Property<string>("InterViewLeaderCenters")
+                        .HasColumnType("longtext CHARACTER SET utf8mb4");
+
+                    b.Property<Guid>("JobId")
+                        .HasColumnType("char(36)");
+
+                    b.Property<string>("JobRecruiterName")
+                        .HasColumnType("longtext CHARACTER SET utf8mb4");
+
+                    b.Property<string>("JobTechnology")
+                        .HasColumnType("longtext CHARACTER SET utf8mb4");
+
+                    b.Property<int>("JobYearsOfExperience")
+                        .HasColumnType("int");
+
+                    b.Property<string>("LastModifiedBy")
+                        .HasColumnType("longtext CHARACTER SET utf8mb4");
+
+                    b.Property<DateTime?>("LastModifiedDate")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<string>("LeaderCenters")
+                        .HasColumnType("longtext CHARACTER SET utf8mb4");
+
+                    b.Property<string>("LtfOrPl")
+                        .HasColumnType("longtext CHARACTER SET utf8mb4");
+
+                    b.Property<string>("ManagerSp")
+                        .HasColumnType("longtext CHARACTER SET utf8mb4");
+
+                    b.Property<decimal>("MaximumSalary")
+                        .HasColumnType("decimal(65,30)");
+
+                    b.Property<decimal>("Offer")
+                        .HasColumnType("decimal(65,30)");
+
+                    b.Property<Guid>("ProjectId")
+                        .HasColumnType("char(36)");
+
+                    b.Property<decimal>("SalaryClaim")
+                        .HasColumnType("decimal(65,30)");
+
+                    b.Property<Guid>("StatusInterviewId")
+                        .HasColumnType("char(36)");
+
+                    b.Property<string>("TechnicalInterviewer")
+                        .HasColumnType("longtext CHARACTER SET utf8mb4");
+
+                    b.HasKey("InterviewId");
+
+                    b.HasIndex("CandidateId")
+                        .IsUnique();
+
+                    b.HasIndex("JobId")
+                        .IsUnique();
+
+                    b.HasIndex("StatusInterviewId");
+
+                    b.ToTable("Interviews");
+                });
+
             modelBuilder.Entity("EverisHire.HireManagement.Domain.Entities.Job", b =>
                 {
                     b.Property<Guid>("JobId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("char(36)");
 
-                    b.Property<string>("AllocationType")
-                        .HasColumnType("longtext CHARACTER SET utf8mb4");
+                    b.Property<Guid>("AllocationTypeId")
+                        .HasColumnType("char(36)");
+
+                    b.Property<Guid?>("AllocationTypeId1")
+                        .HasColumnType("char(36)");
 
                     b.Property<string>("Community")
                         .HasColumnType("longtext CHARACTER SET utf8mb4");
@@ -249,48 +423,29 @@ namespace EverisHire.HireManagement.Persistence.Migrations
                     b.Property<string>("Squad")
                         .HasColumnType("longtext CHARACTER SET utf8mb4");
 
-                    b.Property<string>("Status")
-                        .IsRequired()
-                        .HasColumnType("varchar(20) CHARACTER SET utf8mb4")
-                        .HasMaxLength(20);
+                    b.Property<Guid>("StatusJobId")
+                        .HasColumnType("char(50)")
+                        .HasMaxLength(50);
 
                     b.Property<string>("Technology")
-                        .HasColumnType("varchar(20) CHARACTER SET utf8mb4")
-                        .HasMaxLength(20);
+                        .HasColumnType("varchar(30) CHARACTER SET utf8mb4")
+                        .HasMaxLength(30);
 
-                    b.Property<Guid>("YearsOfExperience")
-                        .HasColumnType("char(36)");
+                    b.Property<int>("YearsOfExperience")
+                        .HasColumnType("int");
 
                     b.HasKey("JobId");
 
+                    b.HasIndex("AllocationTypeId");
+
+                    b.HasIndex("AllocationTypeId1")
+                        .IsUnique();
+
                     b.HasIndex("ProjectId");
 
-                    b.ToTable("Jobs");
+                    b.HasIndex("StatusJobId");
 
-                    b.HasData(
-                        new
-                        {
-                            JobId = new Guid("4bacb9db-5cdc-408a-8a8b-bd2e3727ba05"),
-                            AllocationType = "Remoto",
-                            Community = "Inovação",
-                            CreatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            DesiredDate = new DateTime(2022, 7, 9, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            EverJob = 176498,
-                            Justification = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse nec enim condimentum.",
-                            LeaderCenters = "Roosevelt Gaipó",
-                            LtfOrPl = "Adilson Hemmel Dias",
-                            ManagerSp = "Renato Oliveira",
-                            MaximumSalary = 15000m,
-                            OpeningDate = new DateTime(2021, 6, 5, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Priority = 10,
-                            PriorityDate = new DateTime(2021, 6, 5, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            ProjectId = new Guid("91bb85ac-8e13-4b9f-bbcb-a21b1f1a3c9a"),
-                            Recruiter = "Amanda Silva",
-                            Squad = "Automação sustentável",
-                            Status = "Aberto",
-                            Technology = ".NET CORE",
-                            YearsOfExperience = new Guid("03cef292-b366-4ec0-b1ec-e02e54380ef6")
-                        });
+                    b.ToTable("Jobs");
                 });
 
             modelBuilder.Entity("EverisHire.HireManagement.Domain.Entities.LeaderCenters", b =>
@@ -321,9 +476,27 @@ namespace EverisHire.HireManagement.Persistence.Migrations
                     b.HasData(
                         new
                         {
-                            LeaderCentersId = new Guid("95c9689d-4a0d-4c34-b1fc-77d1581a30f8"),
+                            LeaderCentersId = new Guid("88f77a96-db57-4c49-ac38-287d29d3cce4"),
                             CreatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Name = "Roosevelt Gaipo"
+                            Name = "Mirella Malu Vitória Pereira"
+                        },
+                        new
+                        {
+                            LeaderCentersId = new Guid("2c3c9eda-cf5e-4a49-95c5-0c0537bdceb6"),
+                            CreatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "Lucca Felipe Renato Araújo"
+                        },
+                        new
+                        {
+                            LeaderCentersId = new Guid("56600516-88d8-43df-97e8-f2c9cb81dc84"),
+                            CreatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "Alexandre Heitor Pedro Henrique Ferreira"
+                        },
+                        new
+                        {
+                            LeaderCentersId = new Guid("f8507c2d-7579-42d3-a533-e499a605c768"),
+                            CreatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "Rosângela Andreia Manuela Nogueira"
                         });
                 });
 
@@ -355,7 +528,19 @@ namespace EverisHire.HireManagement.Persistence.Migrations
                     b.HasData(
                         new
                         {
-                            LtfId = new Guid("af9d512a-26ed-492c-ba66-79c73badd20d"),
+                            LtfId = new Guid("d1ea6cfb-c8b6-4240-83ec-1e270cf4ffc1"),
+                            CreatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "Julia Rebeca Alana da Rosa"
+                        },
+                        new
+                        {
+                            LtfId = new Guid("def35ef4-b62e-4703-ba53-2081d624fcce"),
+                            CreatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "Filipe Raul Oliver Sales"
+                        },
+                        new
+                        {
+                            LtfId = new Guid("09e779c2-8ddc-485c-a1af-35f688900541"),
                             CreatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Name = "Anderson Oliveira Barbosa"
                         });
@@ -377,8 +562,23 @@ namespace EverisHire.HireManagement.Persistence.Migrations
                     b.HasData(
                         new
                         {
-                            ManagerSpId = new Guid("2bed1707-291b-491e-b01a-87827d7b8351"),
-                            Name = "Daiane Viana dos Santos"
+                            ManagerSpId = new Guid("6521a664-018f-48a9-9d8e-36e5288ee611"),
+                            Name = "Luiz Cláudio Emanuel Barros"
+                        },
+                        new
+                        {
+                            ManagerSpId = new Guid("54aa0ac2-3b29-4ba3-98ea-00eb668b417c"),
+                            Name = "Bruno Tomás Fernandes"
+                        },
+                        new
+                        {
+                            ManagerSpId = new Guid("cff2ccef-c67c-447b-9717-cca91732c18a"),
+                            Name = "Rafael Benjamin Marcos Vinicius da Paz"
+                        },
+                        new
+                        {
+                            ManagerSpId = new Guid("28d79a49-f4b4-483b-8c9f-b5a831f145b7"),
+                            Name = "Henry Renato Mendes"
                         });
                 });
 
@@ -452,6 +652,20 @@ namespace EverisHire.HireManagement.Persistence.Migrations
                             Code = 10,
                             CreatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Description = "Prioridade máxima para o nível de contratação"
+                        },
+                        new
+                        {
+                            PriorityId = new Guid("8c699ce3-f17e-41fe-be04-56dd8d44221d"),
+                            Code = 1,
+                            CreatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Description = "Prioridade inicial para o nível de contratação"
+                        },
+                        new
+                        {
+                            PriorityId = new Guid("13787591-4682-4f55-bb66-d6eb53b41f22"),
+                            Code = 5,
+                            CreatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Description = "Prioridade média para o nível de contratação"
                         });
                 });
 
@@ -567,9 +781,27 @@ namespace EverisHire.HireManagement.Persistence.Migrations
                     b.HasData(
                         new
                         {
-                            RecruiterId = new Guid("1fb97415-ceaf-4a99-ac53-0476620c0d61"),
+                            RecruiterId = new Guid("7c80caac-ca78-4ae1-8760-6fadb5f17454"),
                             CreatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Name = "Amanda Nobrega"
+                        },
+                        new
+                        {
+                            RecruiterId = new Guid("10692d46-29db-4757-9974-54ff69dfbd60"),
+                            CreatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "Benedito Cláudio Bernardes"
+                        },
+                        new
+                        {
+                            RecruiterId = new Guid("e7a3a895-9c23-4f9e-b95b-f9b00155a35d"),
+                            CreatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "Mariana Eliane Patrícia Assis"
+                        },
+                        new
+                        {
+                            RecruiterId = new Guid("a716de56-6f1d-44e6-8e87-2118f88f8fbe"),
+                            CreatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "Gustavo Nicolas Leandro da Silva"
                         });
                 });
 
@@ -604,10 +836,112 @@ namespace EverisHire.HireManagement.Persistence.Migrations
                     b.HasData(
                         new
                         {
-                            SquadId = new Guid("b38454c2-9d8b-48fe-8e0d-e5f3bf3f80b7"),
+                            SquadId = new Guid("6b233f3f-b9a5-4bca-8888-6c05e7efd5f0"),
                             CreatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Description = "Squad de colaboradores que atuam por teletrabalho",
-                            Name = "Squad de automação"
+                            Description = "Automação de processos",
+                            Name = "Automação"
+                        },
+                        new
+                        {
+                            SquadId = new Guid("cb81dbb3-521f-417c-a0eb-d1e609621694"),
+                            CreatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Description = "Extensão da squad no cliente",
+                            Name = "Extensão"
+                        },
+                        new
+                        {
+                            SquadId = new Guid("2fc6c21f-c70b-4a67-b9dc-6f428aff39e8"),
+                            CreatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Description = "Squad que atua o desenvolvimento de novas soluções",
+                            Name = "Soluções customizadas"
+                        });
+                });
+
+            modelBuilder.Entity("EverisHire.HireManagement.Domain.Entities.StatusCandidate", b =>
+                {
+                    b.Property<Guid>("StatusCandidateId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("char(36)");
+
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("longtext CHARACTER SET utf8mb4");
+
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("longtext CHARACTER SET utf8mb4");
+
+                    b.Property<string>("LastModifiedBy")
+                        .HasColumnType("longtext CHARACTER SET utf8mb4");
+
+                    b.Property<DateTime?>("LastModifiedDate")
+                        .HasColumnType("datetime(6)");
+
+                    b.HasKey("StatusCandidateId");
+
+                    b.ToTable("StatusCandidates");
+
+                    b.HasData(
+                        new
+                        {
+                            StatusCandidateId = new Guid("b7eb1a42-58a7-456d-addd-afdca19e7974"),
+                            CreatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Description = "Contratado"
+                        },
+                        new
+                        {
+                            StatusCandidateId = new Guid("bcfcb699-d73e-4d91-8a0a-df0da45445df"),
+                            CreatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Description = "Reprovado"
+                        },
+                        new
+                        {
+                            StatusCandidateId = new Guid("86829568-fa06-497a-9179-d88ebd1ff876"),
+                            CreatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Description = "Disponível"
+                        },
+                        new
+                        {
+                            StatusCandidateId = new Guid("0ac67cf3-8bfa-4b3f-b68b-da2159065afe"),
+                            CreatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Description = "Indisponível"
+                        });
+                });
+
+            modelBuilder.Entity("EverisHire.HireManagement.Domain.Entities.StatusInterview", b =>
+                {
+                    b.Property<Guid>("StatusInterviewId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("char(36)");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("longtext CHARACTER SET utf8mb4");
+
+                    b.HasKey("StatusInterviewId");
+
+                    b.ToTable("InterviewStatus");
+
+                    b.HasData(
+                        new
+                        {
+                            StatusInterviewId = new Guid("87b87f11-969e-4ba4-85bc-537caf1c08e2"),
+                            Description = "Aberto"
+                        },
+                        new
+                        {
+                            StatusInterviewId = new Guid("4d535cd2-6a10-48a4-995f-8a4527db47c5"),
+                            Description = "Fechado"
+                        },
+                        new
+                        {
+                            StatusInterviewId = new Guid("789d31f7-e584-45cc-82fd-7b4b332b9ac7"),
+                            Description = "Contratado"
+                        },
+                        new
+                        {
+                            StatusInterviewId = new Guid("71ce3523-552f-4394-948f-4f5a1a61f5c1"),
+                            Description = "Reprovado"
                         });
                 });
 
@@ -616,9 +950,6 @@ namespace EverisHire.HireManagement.Persistence.Migrations
                     b.Property<Guid>("StatusJobId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("char(36)");
-
-                    b.Property<int>("Code")
-                        .HasColumnType("int");
 
                     b.Property<string>("CreatedBy")
                         .HasColumnType("longtext CHARACTER SET utf8mb4");
@@ -642,10 +973,15 @@ namespace EverisHire.HireManagement.Persistence.Migrations
                     b.HasData(
                         new
                         {
-                            StatusJobId = new Guid("75410d2f-8784-401d-97f8-a4d00b8c0309"),
-                            Code = 1,
+                            StatusJobId = new Guid("8b5b6de5-7af8-497a-b4a9-af51dbde126f"),
                             CreatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Description = "Aberta"
+                            Description = "Aberto"
+                        },
+                        new
+                        {
+                            StatusJobId = new Guid("b3fc5eff-0179-45d4-a6f9-561958538b71"),
+                            CreatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Description = "Fechado"
                         });
                 });
 
@@ -739,21 +1075,21 @@ namespace EverisHire.HireManagement.Persistence.Migrations
                     b.HasKey("YearsOfExperienceId");
 
                     b.ToTable("YearsOfExperience");
-
-                    b.HasData(
-                        new
-                        {
-                            YearsOfExperienceId = new Guid("03cef292-b366-4ec0-b1ec-e02e54380ef6"),
-                            CreatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            ViewValue = "1 - 2"
-                        });
                 });
 
             modelBuilder.Entity("EverisHire.HireManagement.Domain.Entities.Candidate", b =>
                 {
-                    b.HasOne("EverisHire.HireManagement.Domain.Entities.Job", "Job")
+                    b.HasOne("EverisHire.HireManagement.Domain.Entities.AllocationType", "AllocationType")
                         .WithMany("Candidates")
-                        .HasForeignKey("JobId");
+                        .HasForeignKey("AllocationTypeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("EverisHire.HireManagement.Domain.Entities.StatusCandidate", "StatusCandidate")
+                        .WithMany("Candidates")
+                        .HasForeignKey("StatusCandidateId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("EverisHire.HireManagement.Domain.Entities.Event", b =>
@@ -765,11 +1101,48 @@ namespace EverisHire.HireManagement.Persistence.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("EverisHire.HireManagement.Domain.Entities.Interview", b =>
+                {
+                    b.HasOne("EverisHire.HireManagement.Domain.Entities.Candidate", "Candidate")
+                        .WithOne("Interview")
+                        .HasForeignKey("EverisHire.HireManagement.Domain.Entities.Interview", "CandidateId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("EverisHire.HireManagement.Domain.Entities.Job", "Job")
+                        .WithOne("Interview")
+                        .HasForeignKey("EverisHire.HireManagement.Domain.Entities.Interview", "JobId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("EverisHire.HireManagement.Domain.Entities.StatusInterview", "StatusInterview")
+                        .WithMany("Interviews")
+                        .HasForeignKey("StatusInterviewId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
             modelBuilder.Entity("EverisHire.HireManagement.Domain.Entities.Job", b =>
                 {
+                    b.HasOne("EverisHire.HireManagement.Domain.Entities.AllocationType", "AllocationType")
+                        .WithMany("Jobs")
+                        .HasForeignKey("AllocationTypeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("EverisHire.HireManagement.Domain.Entities.AllocationType", null)
+                        .WithOne("Job")
+                        .HasForeignKey("EverisHire.HireManagement.Domain.Entities.Job", "AllocationTypeId1");
+
                     b.HasOne("EverisHire.HireManagement.Domain.Entities.Project", "Project")
                         .WithMany("Jobs")
                         .HasForeignKey("ProjectId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("EverisHire.HireManagement.Domain.Entities.StatusJob", "StatusJob")
+                        .WithMany("Jobs")
+                        .HasForeignKey("StatusJobId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });

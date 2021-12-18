@@ -9,8 +9,7 @@ namespace EverisHire.HireManagement.Persistence.Configurations
         public void Configure(EntityTypeBuilder<Project> builder)
         {
             builder.HasKey(value => value.ProjectId);
-            builder.HasMany(value => value.Jobs);
-                    
+
             builder.Property(value => value.Name)
                 .IsRequired()
                 .HasMaxLength(30);

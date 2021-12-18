@@ -12,16 +12,18 @@ namespace EverisHire.HireManagement.Application.Features.Jobs.Queries
         public string Community { get; set; }
         public string Squad { get; set; }
         public Guid ProjectId { get; set; }
-        public string AllocationType { get; set; }
+        public Guid StatusJobId { get; set; }
+        public string AllocationTypeDescription { get; set; }
         public DateTime? OpeningDate { get; set; }
         public string Technology { get; set; }
-        public Guid YearsOfExperience { get; set; }
+        public int YearsOfExperience { get; set; }
         public DateTime DesiredDate { get; set; }
         public decimal MaximumSalary { get; set; }
         public string Recruiter { get; set; }
         public int? Priority { get; set; }
         public DateTime? PriorityDate { get; set; }
-        public string Status { get; set; }
+        public string ProjectDescription { get; set; }
+        public string StatusDescription { get; set; }
         public string Justification { get; set; }
     }
 }

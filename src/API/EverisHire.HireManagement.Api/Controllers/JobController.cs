@@ -5,6 +5,7 @@ using EverisHire.HireManagement.Application.Features.Jobs.Commands.CreateJob;
 using EverisHire.HireManagement.Application.Features.Jobs.Commands.DeleteJob;
 using EverisHire.HireManagement.Application.Features.Jobs.Commands.UpdateJob;
 using EverisHire.HireManagement.Application.Features.Jobs.Queries;
+using EverisHire.HireManagement.Application.Features.Jobs.Queries.GetJobInterviewDetail;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -32,12 +33,28 @@ namespace EverisHire.HireManagement.Api.Controllers
             var dto = await _mediator.Send(new GetJobListQuery());
             return Ok(dto);
         }
+        
+        [HttpGet("all/open", Name = "GetAllOpenJobs")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        public async Task<ActionResult<List<JobOpenListVm>>> GetAllOpenJobs()
+        {
+            var dto = await _mediator.Send(new GetAllOpenJobsOpenListQuery());
+            return Ok(dto);
+        }
 
         [HttpGet("{id}", Name = "GetJobById")]
         public async Task<ActionResult<JobDetailVm>> GetJobById(Guid id)
         {
             var getJobDetailQuery = new GetJobDetailQuery() {JobId = id};
             return Ok(await _mediator.Send(getJobDetailQuery));
+        }
+        
+        [HttpGet("interview/{everJob}", Name = "GetJobByEverJob")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        public async Task<ActionResult<JobInterviewDetailVm>> GetJobByEverJob(int everJob)
+        {
+            var getJobInterviewDetailQuery = new GetJobInterviewDetailQuery() { EverJob = everJob };
+            return Ok(await _mediator.Send(getJobInterviewDetailQuery));
         }
 
         [HttpPost(Name = "AddJob")]
